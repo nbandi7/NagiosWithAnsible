@@ -4,5 +4,3 @@ define hostgroup {
      hostgroup_name      servers
      alias               Linux Servers
 }
-
-#    members             {% for host in groups['nagiosclients'] %}{{ host }}{% if not loop.last %},{% endif %}{% endfor %}
