@@ -1,2 +1,14 @@
 ---
 # vars file for nagios_plugins
+
+# Downloading directory
+plugin_download_dir: /tmp
+
+# Nagios plugin version
+nagios_plugin_version: "2.3.3"
+
+# Nagios downloading link
+nagios_plugin_download_source_link: "https://github.com/nagios-plugins/nagios-plugins/archive"
+
+# Download file name for nagios-plugins
+nagios_plugin_download_file: "nagios-plugins-release-{{ ansible_nagios_plugin_version }}"
