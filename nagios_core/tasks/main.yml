@@ -118,14 +118,6 @@
     state: touch
     mode: 0755
 
-
-# - name: Test nagios environment
-#   debug: msg = "You can access nagios at https://{{item}}/nagios using nagiosadmin / nagios"
-
-# - name: Display user password change information
-#   debug: msg="Run the following to change the nagios password --> htpasswd /etc/nagios/passwd nagiosadmin"
-
-
 - name: Download and unarchieve the nrpe from source
   unarchive:
     src: "{{ nrpe_download_source_link }}/nrpe-{{ nrpe_version }}.tar.gz"
@@ -150,26 +142,16 @@
   args:
     chdir: "{{ nagios_download_dir }}/{{ nrpe_plugin_download_file }}"
 
-- name: Restart service httpd
+- name: Restart and Enable service httpd
   become: true
   service:
     name: httpd
     state: restarted
-
-- name: Enable service httpd
-  become: true
-  service:
-    name: httpd
     enabled: yes
-
-- name: Restart service nagios
+    
+- name: Restart and Enable service nagios
   become: true
   service:
     name: nagios
     state: restarted
-
-- name: Enable nagios
-  become: true
-  service:
-    name: nagios
     enabled: yes
