@@ -1,5 +1,13 @@
 ---
 # tasks file for nagios_plugins
+- name: Ensure Prerequisites for Nagios Plugins are present
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    "{{ plugin_prerequisites }}"
+
 - name: Download and unarchieve the nagios plugins from source
   unarchive:
     src: "{{ nagios_plugin_download_source_link }}/release-{{ nagios_plugin_version }}.tar.gz"
