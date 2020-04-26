@@ -1,0 +1,26 @@
+###############################################################################
+#
+# CONTACTS
+#
+###############################################################################
+
+define contact {
+
+    contact_name            custom-nagiosadmin
+    use                     generic-contact
+    alias                   Nagios Admin
+    email                   yourmail@domain.com
+}
+
+###############################################################################
+#
+# CONTACT GROUPS
+#
+###############################################################################
+
+define contactgroup {
+
+    contactgroup_name       custom-admins
+    alias                   Nagios Administrators
+    members                 custom-nagiosadmin
+}

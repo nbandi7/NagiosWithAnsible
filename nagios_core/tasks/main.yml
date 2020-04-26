@@ -1,2 +1,175 @@
 ---
 # tasks file for nagios_core
+- include_vars: vars/main.yml
+
+- name: Disable SELinux
+  become: true
+  selinux:
+    state: disabled
+
+- name: Ensure Prerequisites for Nagios are present
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    "{{ nagios_prerequisites }}"
+
+- name: Download and unarchieve the nagios from source
+  unarchive:
+    src: "{{ nagios_download_source_link }}/nagios-{{ nagios_version }}.tar.gz"
+    dest: "{{ nagios_download_dir }}"
+    remote_src: yes
+
+- name: Configure the source
+  become: true
+  command: "./configure"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Make the source
+  become: true
+  command: "make all"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Create nagios user and group
+  become: true
+  command: "make install-groups-users"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Add apache user to the nagios group
+  become: true
+  command: "usermod -a -G nagios apache"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install the binaries
+  become: true
+  command: "make install"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Service / Daemon
+  become: true
+  command: "make install-daemoninit"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install the binaries
+  become: true
+  command: "make install-daemoninit"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Command Mode
+  become: true
+  command: "make install-commandmode"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Configuration Files
+  become: true
+  command: "make install-config"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Apache Configuration Files
+  become: true
+  command: "make install-webconf"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Create nagiosadmin User Account
+  become: true
+  command: "htpasswd -b -c /usr/local/nagios/etc/htpasswd.users nagiosadmin nagios"
+
+- name: Uncomment the servers configuration directory line
+  become: true
+  replace:
+    path: /usr/local/nagios/etc/nagios.cfg
+    regexp: '#cfg_dir=/usr/local/nagios/etc/servers'
+    replace: 'cfg_dir=/usr/local/nagios/etc/servers'
+
+- name: Creates directory
+  become: true
+  file:
+    path: /usr/local/nagios/etc/servers
+    state: directory
+
+- name: Generate the nagios server configuration templates
+  become: true
+  template: 
+    src: "{{ item + '.j2' }}"
+    dest: /usr/local/nagios/etc/servers/{{ item }}
+    force: yes
+  loop:
+    - custom-contacts.cfg
+    - custom-hostgroups.cfg
+    - custom-hosts.cfg
+    - custom-template.cfg
+    - custom-commands.cfg
+
+- name: Create index.html file
+  become: true 
+  file:
+    path: /var/www/html/index.html
+    state: touch
+    mode: 0755
+
+
+# - name: Test nagios environment
+#   debug: msg = "You can access nagios at https://{{item}}/nagios using nagiosadmin / nagios"
+
+# - name: Display user password change information
+#   debug: msg="Run the following to change the nagios password --> htpasswd /etc/nagios/passwd nagiosadmin"
+
+
+- name: Download and unarchieve the nrpe from source
+  unarchive:
+    src: "{{ nrpe_download_source_link }}/nrpe-{{ nrpe_version }}.tar.gz"
+    dest: "{{ nagios_download_dir }}"
+    remote_src: yes
+
+- name: Configure the nrpe
+  become: true
+  command: ./configure
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Make NRPE
+  become: true
+  command: make check_nrpe
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Install the NRPE plugin
+  become: true
+  command: make install-plugin
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Restart service httpd
+  become: true
+  service:
+    name: httpd
+    state: restarted
+
+- name: Enable service httpd
+  become: true
+  service:
+    name: httpd
+    enabled: yes
+
+- name: Restart service nagios
+  become: true
+  service:
+    name: nagios
+    state: restarted
+
+- name: Enable nagios
+  become: true
+  service:
+    name: nagios
+    enabled: yes

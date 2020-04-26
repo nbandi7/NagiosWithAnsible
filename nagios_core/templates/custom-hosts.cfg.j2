@@ -1,0 +1,38 @@
+{% for host in groups['nagiosclients'] %}
+define host {
+	use                     custom-host
+	host_name               {{ host }}
+	alias                   {{ host }}
+	address                 {{ host }}
+	hostgroups              servers
+}
+
+{% endfor %}
+
+define service{
+     use                 custom-service
+     hostgroup_name      servers
+     service_description CPU Load
+     check_command       check_nrpe!check_load
+}
+
+define service{
+     use                 custom-service
+     hostgroup_name      servers
+     service_description Current Users
+     check_command       check_nrpe!check_users
+}
+
+define service{
+     use                 custom-service
+     hostgroup_name      servers
+     service_description Check Zombie Procs
+     check_command       check_nrpe!check_zombie_procs
+}
+
+define service{
+     use                 custom-service
+     hostgroup_name      servers
+     service_description Total Processes
+     check_command       check_nrpe!check_total_procs!
+}
