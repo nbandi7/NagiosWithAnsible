@@ -1,10 +1,12 @@
 - name: Deploy Nagios 
+  become: true
   hosts: masterserver
   roles:
   - nagios_plugins
   - nagios_core
 
 - name: Deploy NRPE
+  become: true
   hosts: clientservers
   roles:
   - nagios_plugins
