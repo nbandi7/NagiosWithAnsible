@@ -4,8 +4,8 @@
   - nagios_plugins
   - nagios_core
 
-# - name: Deploy NRPE
-#   hosts: clientservers
-#   roles:
-#   - nagios_nrpe
-#   - nagios_plugins
+- name: Deploy NRPE
+  hosts: clientservers
+  roles:
+  - nagios_plugins
+  - nagios_nrpe

@@ -1,4 +1,4 @@
-{% for host in groups['nagiosclients'] %}
+{% for host in groups['clientservers'] %}
 define host {
 	use                     custom-host
 	host_name               {{ host }}
