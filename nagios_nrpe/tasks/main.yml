@@ -65,7 +65,7 @@
   lineinfile:
     dest: /usr/local/nagios/etc/nrpe.cfg
     regexp: '^allowed_hosts='
-    line: "allowed_hosts=127.0.0.1,{% for host in groups['clientservers'] %}{{ host }}{% if not loop.last %},{% endif %}{% endfor %}"
+    line: "allowed_hosts=127.0.0.1,{% for host in groups['masterserver'] %}{{ host }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 - name: Set dont_blame_nrpe in nrpe.cfg
   become: true
