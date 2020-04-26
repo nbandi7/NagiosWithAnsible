@@ -105,11 +105,11 @@
     dest: /usr/local/nagios/etc/servers/{{ item }}
     force: yes
   loop:
-    - custom-contacts.cfg
-    - custom-hostgroups.cfg
-    - custom-hosts.cfg
-    - custom-template.cfg
-    - custom-commands.cfg
+    - contacts.cfg
+    - hostgroups.cfg
+    - hosts.cfg
+    - template.cfg
+    - commands.cfg
 
 - name: Create index.html file
   become: true 

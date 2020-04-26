@@ -13,6 +13,8 @@ nagios_prerequisites:
   - gd-devel
   - perl
   - postfix
+  - openssl
+  - openssl-devel
 
 # Nagios Core Version 
 nagios_version: "4.4.5"
