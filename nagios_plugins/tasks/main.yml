@@ -1,7 +1,6 @@
 ---
 # tasks file for nagios_plugins
 - name: Ensure Prerequisites for Nagios Plugins are present
-  become: true
   yum:
     name: "{{ item }}"
     state: present
@@ -15,25 +14,21 @@
     remote_src: yes
 
 - name: Set tools setup
-  become: true
   command: ./tools/setup
   args:
     chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
 
 - name: Configure
-  become: true
   command: ./configure
   args:
     chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
 
 - name: Make
-  become: true
   command: make
   args:
     chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
 
 - name: Make Install
-  become: true
   command: make install
   args:
     chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"

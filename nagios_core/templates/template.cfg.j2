@@ -1,6 +1,6 @@
 #Custom host definition
 define host {
-    name                            custom-host
+    name                            host
     use                             generic-host
     check_period                    24x7
     check_interval                  5
@@ -10,14 +10,14 @@ define host {
     notification_period             workhours
     notification_interval           120
     notification_options            d,u,r
-    contact_groups                  custom-admins
+    contact_groups                  admins
     register                        0
 }
 
 #Custom service definition
 
 define service {
-    name                            custom-service
+    name                            service
     use                             generic-service
     max_check_attempts              5
     check_interval                  5

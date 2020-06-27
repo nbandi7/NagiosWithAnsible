@@ -6,7 +6,7 @@
 
 define contact {
 
-    contact_name            custom-nagiosadmin
+    contact_name            nagiosadmin
     use                     generic-contact
     alias                   Nagios Admin
     email                   yourmail@domain.com
@@ -20,7 +20,7 @@ define contact {
 
 define contactgroup {
 
-    contactgroup_name       custom-admins
+    contactgroup_name       admins
     alias                   Nagios Administrators
-    members                 custom-nagiosadmin
+    members                 nagiosadmin
 }
