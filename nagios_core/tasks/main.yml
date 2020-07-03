@@ -4,6 +4,6 @@
   include: rhel.yml
   when: ansible_os_family == 'RedHat'
 
-- name: Nagios Installation on RHEL8
+- name: Nagios Installation on Ubuntu
   include: ubuntu.yml
   when: ansible_os_family == 'Debian' 

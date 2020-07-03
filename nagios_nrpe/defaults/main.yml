@@ -1,2 +1,18 @@
 ---
 # defaults file for nagios_nrpe
+# NRPE Version
+nrpe_version: "4.0.2"
+
+#NRPE downloading link
+nrpe_download_source_link: "https://github.com/NagiosEnterprises/nrpe/archive"
+
+# Download file name for NRPE
+nrpe_plugin_download_file: "nrpe-nrpe-{{ nrpe_version }}"
+
+# Downloading directory
+nrpe_download_dir: /tmp
+
+# Nagios custom folder path
+nrpe_folder_path: "/usr/local/nagios/etc/"
+
+nrpe_dont_blame_nrpe: 1

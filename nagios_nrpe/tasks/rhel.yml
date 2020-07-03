@@ -1,0 +1,70 @@
+---
+# tasks file for nagios_nrpe
+- include_vars: main.yml
+
+- name: Install Prerequisites
+  yum:
+    state: present
+    name:
+      "{{ nrpe_prerequisites }}"
+
+- name: Download and unarchieve the nrpe from source
+  unarchive:
+    src: "{{ nrpe_download_source_link }}/nrpe-{{ nrpe_version }}.tar.gz"
+    dest: "{{ nrpe_download_dir }}"
+    remote_src: yes
+
+- name: Configure the nrpe
+  command: ./configure --enable-command-args
+  args:
+    chdir: "{{ nrpe_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Make all
+  command: make all
+  args:
+    chdir: "{{ nrpe_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Create User And Group
+  command: make install-groups-users
+  args:
+    chdir: "{{ nrpe_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Install binaries
+  command: make install
+  args:
+    chdir: "{{ nrpe_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Install Configuration Files
+  command: make install-config
+  args:
+    chdir: "{{ nrpe_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Update Services File
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ nrpe_download_dir }}/{{ nrpe_plugin_download_file }}"
+  loop:
+    - echo 'nrpe    5666/tcp {{ "#" }} Nagios services' >> /etc/services
+
+- name: Install Service / Daemon
+  command: make install-init
+  args:
+    chdir: "{{ nrpe_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Set allowed_hosts in nrpe.cfg
+  lineinfile:
+    dest: /usr/local/nagios/etc/nrpe.cfg
+    regexp: '^allowed_hosts='
+    line: "allowed_hosts=127.0.0.1,{% for host in groups['masterserver'] %}{{ host }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+- name: Set dont_blame_nrpe in nrpe.cfg
+  lineinfile:
+    dest: /usr/local/nagios/etc/nrpe.cfg
+    regexp: '^dont_blame_nrpe='
+    line: "dont_blame_nrpe={{ nrpe_dont_blame_nrpe }}"
+
+- name: Start NRPE Service
+  service:
+    name: nrpe
+    state: started
+    enabled: yes

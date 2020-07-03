@@ -1,0 +1,12 @@
+---
+
+ubuntu_prerequisites:
+  - autoconf
+  - automake
+  - gcc 
+  - libc6
+  - libmcrypt-dev
+  - make
+  - libssl-dev
+  - wget
+  - openssl

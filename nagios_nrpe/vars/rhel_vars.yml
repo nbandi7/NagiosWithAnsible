@@ -1,6 +1,5 @@
 ---
-# vars file for nagios_nrpe
-# Packages needed in order to build NRPE and plugins from source
+
 nrpe_prerequisites:
   - gcc
   - glibc
