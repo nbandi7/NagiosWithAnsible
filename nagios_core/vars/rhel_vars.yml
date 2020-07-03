@@ -1,0 +1,17 @@
+---
+# vars file for nagios_core
+# Prerequisites
+nagios_prerequisites:
+  - gcc
+  - glibc
+  - glibc-common
+  - wget
+  - unzip
+  - httpd
+  - php
+  - gd
+  - gd-devel
+  - perl
+  - postfix
+  - openssl
+  - openssl-devel

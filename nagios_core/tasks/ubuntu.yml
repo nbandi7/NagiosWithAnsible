@@ -1,0 +1,144 @@
+---
+# tasks file for nagios_core
+- include_vars: vars/ubuntu_vars.yml
+
+- name: Prerequisites for Nagios
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+  - "{{ ubuntu_prerequisites }}"
+
+- name: Unarchieve the nagios from source
+  unarchive:
+    src: "{{ nagios_download_source_link }}/nagios-{{ nagios_version }}.tar.gz"
+    dest: "{{ nagios_download_dir }}"
+    remote_src: yes
+
+- name: Configure the source
+  command: "./configure --with-httpd-conf=/etc/apache2/sites-enabled"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Make the source
+  command: "make all"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Create nagios user and group
+  command: "make install-groups-users"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Check for apache user present or not
+  user:
+    name: apache
+
+- name: Add apache user to the nagios group
+  command: "usermod -a -G nagios apache"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install the binaries
+  command: "make install"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Service / Daemon
+  command: "make install-daemoninit"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Command Mode
+  command: "make install-commandmode"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Configuration Files
+  command: "make install-config"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Install Apache Configuration Files
+  command: "make install-webconf"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: rewrite
+  command: "a2enmod rewrite"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: cgi
+  command: "a2enmod cgi"
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
+
+- name: Create nagiosadmin User Account
+  command: "htpasswd -b -c /usr/local/nagios/etc/htpasswd.users nagiosadmin nagios"
+
+- name: Uncomment the servers configuration directory line
+  replace:
+    path: /usr/local/nagios/etc/nagios.cfg
+    regexp: '#cfg_dir=/usr/local/nagios/etc/servers'
+    replace: 'cfg_dir=/usr/local/nagios/etc/servers'
+
+- name: Creates directory
+  become: true
+  file:
+    path: /usr/local/nagios/etc/servers
+    state: directory
+
+- name: Generate the nagios server configuration templates
+  become: true
+  template: 
+    src: "{{ item + '.j2' }}"
+    dest: /usr/local/nagios/etc/servers/{{ item }}
+    force: yes
+  loop:
+    - contacts.cfg
+    - hostgroups.cfg
+    - hosts.cfg
+    - template.cfg
+    - commands.cfg
+    - services.cfg
+
+- name: Create index.html file 
+  file:
+    path: /var/www/html/index.html
+    state: touch
+    mode: '0755'
+
+- name: Download and unarchieve the nrpe from source
+  unarchive:
+    src: "https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz"
+    dest: /tmp
+    remote_src: yes
+
+- name: Configure the nrpe
+  command: ./configure
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Make NRPE
+  command: make check_nrpe
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Install the NRPE plugin
+  command: make install-plugin
+  args:
+    chdir: "{{ nagios_download_dir }}/{{ nrpe_plugin_download_file }}"
+
+- name: Restart and Enable service apache
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+    
+- name: Restart and Enable service nagios
+  service:
+    name: nagios
+    state: restarted
+    enabled: yes

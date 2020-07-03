@@ -1,2 +1,26 @@
 ---
 # defaults file for nagios_core
+
+# Nagios Core Version 
+nagios_version: "4.4.5"
+
+# Download directory
+nagios_download_dir: /tmp
+
+# Nagios Core downloading link 
+nagios_download_source_link: "https://github.com/NagiosEnterprises/nagioscore/archive/"
+
+# Download file name for nagios
+nagios_download_file: "nagioscore-nagios-{{ nagios_version }}"
+
+# Nagios custom folder path
+nagios_servers_folder_path: "/usr/local/nagios/etc/servers"
+
+# NRPE Version
+nrpe_version: "4.0.2"
+
+#NRPE downloading link
+nrpe_download_source_link: "https://github.com/NagiosEnterprises/nrpe/archive"
+
+# Download file name for NRPE
+nrpe_plugin_download_file: "nrpe-nrpe-{{ nrpe_version }}"

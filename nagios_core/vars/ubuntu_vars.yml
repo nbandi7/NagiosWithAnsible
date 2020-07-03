@@ -1,0 +1,22 @@
+---
+
+- ubuntu_prerequisites:
+  - autoconf
+  - gcc
+  - libc6
+  - make
+  - wget
+  - unzip
+  - apache2
+  - php
+  - libapache2-mod-php7.2
+  - libgd-dev
+  - libmcrypt-dev
+  - libssl-dev
+  - bc
+  - gawk
+  - dc
+  - build-essential
+  - snmp
+  - libnet-snmp-perl
+  - gettext
