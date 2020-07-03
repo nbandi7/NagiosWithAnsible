@@ -112,7 +112,7 @@
 
 - name: Download and unarchieve the nrpe from source
   unarchive:
-    src: "https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz"
+    src: "{{ nrpe_download_source_link }}/nrpe-{{ nrpe_version }}.tar.gz"
     dest: /tmp
     remote_src: yes
 
