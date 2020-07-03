@@ -31,12 +31,8 @@
   args:
     chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
 
-- name: Check for apache user present or not
-  user:
-    name: apache
-
 - name: Add apache user to the nagios group
-  command: "usermod -a -G nagios apache"
+  command: "usermod -a -G nagios www-data"
   args:
     chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
 
