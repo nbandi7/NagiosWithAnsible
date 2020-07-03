@@ -1,6 +1,6 @@
 ---
 
-- ubuntu_prerequisites:
+ubuntu_prerequisites:
   - autoconf
   - gcc
   - libc6
