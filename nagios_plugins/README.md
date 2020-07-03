@@ -1,7 +1,7 @@
 Nagios Plugins
 =========
 
-This role enables you to install the necessary plugins for nagios to monitor correctly.
+This role enables you to install the necessary plugins for nagios to monitor correctly on Ubuntu and RHEL.
 
 Example Playbook
 ----------------

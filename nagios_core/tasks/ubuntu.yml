@@ -31,7 +31,7 @@
   args:
     chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"
 
-- name: Add apache user to the nagios group
+- name: Add www-data user to the nagios group
   command: "usermod -a -G nagios www-data"
   args:
     chdir: "{{ nagios_download_dir }}/{{ nagios_download_file }}"

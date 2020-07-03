@@ -1,6 +1,6 @@
 galaxy_info:
   author: Nithin C Bandi
-  description: Role to install and Configure Nagios Core 4.4.5 on RHEL
+  description: Role to install and Configure Nagios Core 4.4.5 on RHEL and Ubuntu
 
   license: license (GPL-2.0-or-later, MIT, etc)
 

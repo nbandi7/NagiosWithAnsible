@@ -1,7 +1,7 @@
 Nagios NRPE
 =========
 
-This role enables you to install and configure NRPE on client machine that undergoes monitoring.
+This role enables you to install and configure NRPE on client machine that undergoes monitoring on Ubuntu and RHEl.
 
 Example Playbook
 ----------------

@@ -1,7 +1,7 @@
 Nagios Core
 =========
 
-This role enables you to install and configure Nagios Core
+This role enables you to install and configure Nagios Core on Ubuntu and RHEL
 
 Example Playbook
 ----------------

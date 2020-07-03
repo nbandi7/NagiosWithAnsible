@@ -1,6 +1,6 @@
 galaxy_info:
   author: Nithin C Bandi
-  description: Role to install and Configure NRPE on RHEL client machines
+  description: Role to install and Configure NRPE on RHEL and Ubuntu client machines
 
   license: license (GPL-2.0-or-later, MIT, etc)
 
