@@ -1,4 +1,7 @@
 ---
+
+- include_vars: vars/rhel_vars.yml
+
 # tasks file for nagios_plugins
 - name: Ensure Prerequisites for Nagios Plugins are present
   yum:

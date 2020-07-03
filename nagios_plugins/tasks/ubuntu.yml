@@ -1,4 +1,7 @@
 ---
+
+- include_vars: vars/ubuntu_vars.yml
+
 # tasks file for nagios_plugins
 - name: Ensure Prerequisites for Nagios Plugins are present
   apt:
