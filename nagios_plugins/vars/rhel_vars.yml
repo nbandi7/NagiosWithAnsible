@@ -1,0 +1,15 @@
+---
+# vars file for nagios_plugins
+plugin_prerequisites:
+  - gcc
+  - glibc
+  - glibc-common
+  - make
+  - gettext
+  - automake
+  - autoconf
+  - wget
+  - openssl
+  - openssl-devel
+  - net-snmp
+  - net-snmp-utils

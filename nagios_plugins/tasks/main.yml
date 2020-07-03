@@ -1,34 +1,9 @@
 ---
-# tasks file for nagios_plugins
-- name: Ensure Prerequisites for Nagios Plugins are present
-  yum:
-    name: "{{ item }}"
-    state: present
-  loop:
-    "{{ plugin_prerequisites }}"
 
-- name: Download and unarchieve the nagios plugins from source
-  unarchive:
-    src: "{{ nagios_plugin_download_source_link }}/release-{{ nagios_plugin_version }}.tar.gz"
-    dest: "{{ plugin_download_dir }}"
-    remote_src: yes
+- name: Nagios Plugin Installation on RHEL8
+  include: rhel.yml
+  when: ansible_os_family == 'RedHat'
 
-- name: Set tools setup
-  command: ./tools/setup
-  args:
-    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
-
-- name: Configure
-  command: ./configure
-  args:
-    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
-
-- name: Make
-  command: make
-  args:
-    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
-
-- name: Make Install
-  command: make install
-  args:
-    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
+- name: Nagios Plugin Installation on Ubuntu
+  include: ubuntu.yml
+  when: ansible_os_family == 'Debian' 

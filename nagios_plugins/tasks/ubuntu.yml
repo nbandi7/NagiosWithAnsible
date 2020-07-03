@@ -1,0 +1,34 @@
+---
+# tasks file for nagios_plugins
+- name: Ensure Prerequisites for Nagios Plugins are present
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    "{{ ubuntu_prerequisites }}"
+
+- name: Download and unarchieve the nagios plugins from source
+  unarchive:
+    src: "{{ nagios_plugin_download_source_link }}/release-{{ nagios_plugin_version }}.tar.gz"
+    dest: "{{ plugin_download_dir }}"
+    remote_src: yes
+
+- name: Set tools setup
+  command: ./tools/setup
+  args:
+    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
+
+- name: Configure
+  command: ./configure
+  args:
+    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
+
+- name: Make
+  command: make
+  args:
+    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"
+
+- name: Make Install
+  command: make install
+  args:
+    chdir: "{{ plugin_download_dir }}/{{ nagios_plugin_download_file }}"

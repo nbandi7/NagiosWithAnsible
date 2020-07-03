@@ -1,12 +1,12 @@
 ---
 # tasks file for nagios_nrpe
-- include_vars: main.yml
+- include_vars: ubuntu_vars.yml
 
 - name: Install Prerequisites
-  yum:
+  apt:
     state: present
     name:
-      "{{ nrpe_prerequisites }}"
+      "{{ ubuntu_prerequisites }}"
 
 - name: Download and unarchieve the nrpe from source
   unarchive:

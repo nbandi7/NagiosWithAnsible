@@ -1,6 +1,6 @@
 ---
 # tasks file for nagios_nrpe
-- include_vars: main.yml
+- include_vars: rhel_vars.yml
 
 - name: Install Prerequisites
   yum:
