@@ -2,6 +2,7 @@
 # vars file for nagios_plugins
 ubuntu_prerequisites:
   - autoconf 
+  - build-essential
   - gcc
   - libc6
   - libmcrypt-dev
@@ -11,7 +12,6 @@ ubuntu_prerequisites:
   - bc
   - gawk
   - dc
-  - build-essential
   - snmp
   - libnet-snmp-perl
   - gettext
